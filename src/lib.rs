@@ -7,9 +7,11 @@
 //! governance, and CI can land before module work begins.
 
 pub mod clock;
+pub mod rolling_buffer;
 pub mod threshold;
 
 pub use clock::{Clock, Instant};
+pub use rolling_buffer::{Iter, RollingBuffer};
 pub use threshold::{Level, Threshold, ThresholdError};
 
 #[cfg(feature = "std")]
