@@ -6,6 +6,13 @@
 //! `threshold`. This crate starts intentionally small so repository setup,
 //! governance, and CI can land before module work begins.
 
+pub mod clock;
+
+pub use clock::{Clock, Instant};
+
+#[cfg(feature = "std")]
+pub use clock::StdClock;
+
 /// Human-readable crate status for smoke tests and early integrations.
 pub const BOOTSTRAP_STATUS: &str = "live-core bootstrap";
 
