@@ -75,6 +75,23 @@ tested.
 Residual risk: public fields allow invalid literal construction. `classify`
 validates and panics on invalid bounds, so this fails closed during testing.
 
+### 2.4 `activity`
+
+Risk: accidentally treating raw telemetry as core input or keeping an agent
+active forever from stale data.
+
+Controls:
+
+- `TokenRateSample` accepts only finite, non-negative aggregate rates.
+- Missing samples classify as `Unknown`.
+- Zero-rate samples classify as `Idle` after the configured timeout.
+- Hot state uses validated `Threshold`.
+- `ActivityTracker` stores only numeric rates and the latest sanitized sample.
+
+Residual risk: producer freshness policy is still owned by the integration
+layer. Future idle/offline tracker work should make stale-positive handling
+explicit without adding provider coupling.
+
 ---
 
 ## 3. Dependency and runtime posture

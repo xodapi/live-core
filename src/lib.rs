@@ -6,10 +6,14 @@
 //! `threshold`. This crate starts intentionally small so repository setup,
 //! governance, and CI can land before module work begins.
 
+pub mod activity;
 pub mod clock;
 pub mod rolling_buffer;
 pub mod threshold;
 
+pub use activity::{
+    ActivityClassifier, ActivityError, ActivityState, ActivityTracker, TokenRateSample,
+};
 pub use clock::{Clock, Instant};
 pub use rolling_buffer::{Iter, RollingBuffer};
 pub use threshold::{Level, Threshold, ThresholdError};

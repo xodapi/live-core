@@ -11,9 +11,7 @@ The crate currently provides:
 - `clock`: deterministic time abstraction.
 - `rolling_buffer`: fixed-size metric history.
 - `threshold`: pure level classification.
-
-The next planned layer is `activity`: a small classifier that turns aggregate
-token-rate samples into `Unknown`, `Idle`, `Active`, or `Hot` states.
+- `activity`: aggregate token-rate activity classification.
 
 ---
 
@@ -107,25 +105,25 @@ Important behavior:
 
 ---
 
-## 4. Next module: `activity`
+## 4. Activity module
 
-The next focused code issue should add a pure activity-state classifier. It
-should use the current primitives instead of introducing new runtime layers.
+The activity module turns sanitized aggregate token-rate samples into live
+states without UI, Android, network, or provider coupling.
 
-Suggested public concepts:
+Public concepts:
 
 - `ActivityState::{Unknown, Idle, Active, Hot}`.
-- Aggregate token-rate sample.
-- Idle timeout based on `Instant`.
-- Hot/danger classification based on `Threshold`.
-- Optional short history based on `RollingBuffer<f64, N>`.
+- `TokenRateSample`.
+- `ActivityClassifier`.
+- `ActivityTracker<N>`.
 
-Expected behavior:
+Important behavior:
 
 - Missing sample means `Unknown`.
 - Zero-rate sample older than idle timeout means `Idle`.
 - Recent positive rate means `Active`.
 - Rate above the danger threshold means `Hot`.
+- `ActivityTracker<N>` records aggregate rates in `RollingBuffer<f64, N>`.
 - Tests use synthetic `Instant` values, not sleeping.
 
 This module must not implement strict input/output token-rate split. That
