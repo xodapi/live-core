@@ -92,6 +92,21 @@ Residual risk: producer freshness policy is still owned by the integration
 layer. Future idle/offline tracker work should make stale-positive handling
 explicit without adding provider coupling.
 
+### 2.5 `idle`
+
+Risk: storing too much activity context while trying to detect idle/offline
+state.
+
+Controls:
+
+- `IdleTracker` stores only the configured timeout and an optional `Instant`.
+- `observe_now` depends on the `Clock` trait, not wall-clock sleeps.
+- `NeverSeen`, `Active`, and `Idle` are derived from time only.
+- No payload, task, prompt, provider, UI, or network data is accepted.
+
+Residual risk: integrations still need to decide what counts as activity
+before calling `observe`.
+
 ---
 
 ## 3. Dependency and runtime posture

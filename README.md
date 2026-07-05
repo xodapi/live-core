@@ -9,6 +9,7 @@ The first implementation track is complete:
 2. `rolling_buffer`: fixed-size metric history
 3. `threshold`: pure level classification
 4. `activity`: aggregate token-rate activity state
+5. `idle`: idle/offline timeout tracking
 
 See [docs/LIVE_CORE_FULL_SPEC.ru.md](docs/LIVE_CORE_FULL_SPEC.ru.md) for the
 current specification and

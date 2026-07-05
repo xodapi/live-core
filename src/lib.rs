@@ -8,6 +8,7 @@
 
 pub mod activity;
 pub mod clock;
+pub mod idle;
 pub mod rolling_buffer;
 pub mod threshold;
 
@@ -15,6 +16,7 @@ pub use activity::{
     ActivityClassifier, ActivityError, ActivityState, ActivityTracker, TokenRateSample,
 };
 pub use clock::{Clock, Instant};
+pub use idle::{IdleState, IdleTracker};
 pub use rolling_buffer::{Iter, RollingBuffer};
 pub use threshold::{Level, Threshold, ThresholdError};
 
