@@ -7,8 +7,10 @@
 //! governance, and CI can land before module work begins.
 
 pub mod clock;
+pub mod threshold;
 
 pub use clock::{Clock, Instant};
+pub use threshold::{Level, Threshold, ThresholdError};
 
 #[cfg(feature = "std")]
 pub use clock::StdClock;
