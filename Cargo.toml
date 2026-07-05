@@ -1,0 +1,13 @@
+[package]
+name = "live-core"
+version = "0.1.0"
+edition = "2024"
+description = "Core primitives for live autonomous-agent telemetry"
+license = "MIT"
+repository = "https://github.com/xodapi/live-core"
+
+[features]
+default = ["std"]
+std = []
+
+[dependencies]
