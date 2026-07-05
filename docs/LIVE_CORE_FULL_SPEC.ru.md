@@ -12,6 +12,7 @@ The crate currently provides:
 - `rolling_buffer`: fixed-size metric history.
 - `threshold`: pure level classification.
 - `activity`: aggregate token-rate activity classification.
+- `idle`: deterministic idle/offline timeout tracking.
 
 ---
 
@@ -132,7 +133,27 @@ exists.
 
 ---
 
-## 5. Integration boundaries
+## 5. Idle module
+
+The idle module tracks whether any activity was observed recently enough to
+avoid an idle timeout.
+
+Public concepts:
+
+- `IdleState::{NeverSeen, Active, Idle}`.
+- `IdleTracker`.
+
+Important behavior:
+
+- A new tracker starts as `NeverSeen`.
+- `observe(at)` records sanitized activity time.
+- `observe_now(clock)` supports deterministic clock-based integration.
+- `state(now)` returns `Active` before timeout and `Idle` at or after timeout.
+- The tracker stores only an optional `Instant`, never payload data.
+
+---
+
+## 6. Integration boundaries
 
 `live-core` may be consumed by `vimit`, Android, desktop GUI, TUI, or agent
 supervisors, but it must not depend on them.
@@ -157,7 +178,7 @@ Forbidden inputs:
 
 ---
 
-## 6. Validation baseline
+## 7. Validation baseline
 
 Every change should pass:
 
