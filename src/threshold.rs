@@ -52,13 +52,10 @@ impl Threshold {
     /// cannot be trusted. Positive infinity is also danger, while negative
     /// infinity is below any finite warning threshold and therefore ok.
     ///
-    /// # Panics
-    ///
-    /// Panics if the threshold bounds are invalid. Use [`Threshold::new`] to
-    /// validate bounds at construction time.
     pub fn classify(&self, value: f64) -> Level {
-        self.validate()
-            .expect("threshold bounds must be finite and warning < danger");
+        if self.validate().is_err() {
+            return Level::Danger;
+        }
 
         if value.is_nan() || value >= self.danger {
             Level::Danger
@@ -134,13 +131,22 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "threshold bounds must be finite and warning < danger")]
-    fn classify_panics_for_invalid_literal_threshold() {
+    fn classify_returns_danger_for_invalid_literal_threshold() {
         let threshold = Threshold {
             warning: 20.0,
             danger: 10.0,
         };
 
-        let _ = threshold.classify(15.0);
+        assert_eq!(threshold.classify(15.0), Level::Danger);
+    }
+
+    #[test]
+    fn classify_returns_danger_for_non_finite_literal_threshold() {
+        let threshold = Threshold {
+            warning: f64::NAN,
+            danger: 10.0,
+        };
+
+        assert_eq!(threshold.classify(15.0), Level::Danger);
     }
 }
